@@ -19,8 +19,8 @@ const FeaturedItem = ({ item }) => {
         <Text style={{ margin: 20 }}>{item.description}</Text>
       </Card>
     );
-    return <View />;
   }
+  return <View />;
 };
 
 const HomeScreen = () => {
