@@ -1,4 +1,4 @@
-import { Platform, View } from "react-native";
+import { Platform, View, useWindowDimensions } from "react-native";
 import Constants from "expo-constants";
 import CampsiteInfoScreen from "./CampsiteInfoScreen";
 import DirectoryScreen from "./DirectoryScreen";
@@ -71,6 +71,8 @@ const ContactNavigator = () => {
 };
 
 const Main = () => {
+  const { width } = useWindowDimensions();
+
   return (
     <View
       style={{
@@ -81,6 +83,7 @@ const Main = () => {
       <Drawer.Navigator
         initialRouteName="Home"
         drawerStyle={{ backgroundColor: "#CEC8FF" }}
+        edgeWidth={width}
       >
         <Drawer.Screen
           name="Home"
