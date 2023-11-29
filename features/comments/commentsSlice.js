@@ -17,19 +17,20 @@ const commentsSlice = createSlice({
   name: "comments",
   initialState: { isLoading: true, errMess: null, commentsArray: [] },
   reducers: {},
-  extraReducers: {
-    [fetchComments.pending]: (state) => {
-      state.isLoading = true;
-    },
-    [fetchComments.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.errMess = null;
-      state.commentsArray = action.payload;
-    },
-    [fetchComments.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.errMess = action.error ? action.error.message : "Fetch failed";
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchComments.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchComments.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.errMess = null;
+        state.commentsArray = action.payload;
+      })
+      .addCase(fetchComments.rejected, (state, action) => {
+        state.isLoading = false;
+        state.errMess = action.error ? action.error.message : "Fetch failed";
+      });
   },
 });
 

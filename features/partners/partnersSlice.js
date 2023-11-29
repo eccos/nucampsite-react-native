@@ -17,19 +17,20 @@ const partnersSlice = createSlice({
   name: "partners",
   initialState: { isLoading: true, errMess: null, partnersArray: [] },
   reducers: {},
-  extraReducers: {
-    [fetchPartners.pending]: (state) => {
-      state.isLoading = true;
-    },
-    [fetchPartners.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.errMess = null;
-      state.partnersArray = action.payload;
-    },
-    [fetchPartners.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.errMess = action.error ? action.error.message : "Fetch failed";
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchPartners.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchPartners.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.errMess = null;
+        state.partnersArray = action.payload;
+      })
+      .addCase(fetchPartners.rejected, (state, action) => {
+        state.isLoading = false;
+        state.errMess = action.error ? action.error.message : "Fetch failed";
+      });
   },
 });
 
