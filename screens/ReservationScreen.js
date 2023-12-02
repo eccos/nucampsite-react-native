@@ -16,7 +16,7 @@ const ReservationScreen = () => {
   const [campers, setCampers] = useState(1);
   const [hikeIn, setHikeIn] = useState(false);
   const [date, setDate] = useState(new Date());
-  const [showCalender, setShowCalendar] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const onDateChange = (event, selectedDate) => {
@@ -68,13 +68,13 @@ const ReservationScreen = () => {
       <View style={styles.formRow}>
         <Text style={styles.formLabel}>Date:</Text>
         <Button
-          onPress={() => setShowCalendar(!showCalender)}
+          onPress={() => setShowCalendar(!showCalendar)}
           title={date.toLocaleDateString("en-US")}
           color="#5637DD"
           accessibilityLabel="Tap me to select a reservation date"
         />
       </View>
-      {showCalender && (
+      {showCalendar && (
         <DateTimePicker
           style={styles.formItem}
           value={date}
