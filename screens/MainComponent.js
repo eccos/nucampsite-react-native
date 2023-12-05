@@ -216,7 +216,7 @@ const Main = () => {
         initialRouteName="Home"
         drawerContent={CustomDrawerContent}
         drawerStyle={{ backgroundColor: "#CEC8FF" }}
-        edgeWidth={width}
+        edgeWidth={width / 8}
       >
         <Drawer.Screen
           name="Home"
