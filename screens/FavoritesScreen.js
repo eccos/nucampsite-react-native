@@ -1,16 +1,17 @@
 import {
+  Alert,
   FlatList,
-  Text,
-  View,
-  TouchableOpacity,
   StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { Avatar, ListItem } from "react-native-elements";
+import { SwipeRow } from "react-native-swipe-list-view";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/LoadingComponent";
-import { baseUrl } from "../shared/baseUrl";
-import { SwipeRow } from "react-native-swipe-list-view";
 import { toggleFavorite } from "../features/favorites/favoritesSlice";
+import { baseUrl } from "../shared/baseUrl";
 
 const FavoritesScreen = ({ navigation }) => {
   const campsites = useSelector((state) => state.campsites);
@@ -34,7 +35,26 @@ const FavoritesScreen = ({ navigation }) => {
         <View style={styles.deleteView}>
           <TouchableOpacity
             style={styles.deleteTouchable}
-            onPress={() => dispatch(toggleFavorite(campsite.id))}
+            onPress={() =>
+              Alert.alert(
+                "Delete Favorite?",
+                "Are you sure you wish to delete the favorite campsite " +
+                  campsite.name +
+                  "?",
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => console.log(campsite.name + " Not Deleted"),
+                    style: "cancel",
+                  },
+                  {
+                    text: "OK",
+                    onPress: () => dispatch(toggleFavorite(campsite.id)),
+                  },
+                ],
+                { cancelable: false }
+              )
+            }
           >
             <Text style={styles.deleteText}>Delete</Text>
           </TouchableOpacity>
