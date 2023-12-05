@@ -1,23 +1,11 @@
-import { useEffect, useRef } from "react";
-import { Animated, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
+import * as Animatable from "react-native-animatable";
 import { Card } from "react-native-elements";
 import { useSelector } from "react-redux";
 import Loading from "../components/LoadingComponent";
 import { baseUrl } from "../shared/baseUrl";
 
 const FeaturedItem = ({ item, isLoading, errMess }) => {
-  const scaleValue = useRef(new Animated.Value(0)).current;
-  const scaleAnimation = Animated.timing(scaleValue, {
-    toValue: 1,
-    duration: 1000,
-    useNativeDriver: true,
-  });
-
-  useEffect(() => {
-    if (isLoading) return;
-    scaleAnimation.start();
-  }, [isLoading]);
-
   if (isLoading) {
     return <Loading />;
   } else if (errMess) {
@@ -28,7 +16,7 @@ const FeaturedItem = ({ item, isLoading, errMess }) => {
     );
   } else if (item) {
     return (
-      <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
+      <Animatable.View animation="zoomIn" duration={1000}>
         <Card containerStyle={{ padding: 0 }}>
           <Card.Image source={{ uri: baseUrl + item.image }}>
             <View style={{ justifyContent: "center", flex: 1 }}>
@@ -41,7 +29,7 @@ const FeaturedItem = ({ item, isLoading, errMess }) => {
           </Card.Image>
           <Text style={{ margin: 20 }}>{item.description}</Text>
         </Card>
-      </Animated.View>
+      </Animatable.View>
     );
   }
 
