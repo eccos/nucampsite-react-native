@@ -1,5 +1,6 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
+import * as Notifications from "expo-notifications";
 import { useState } from "react";
 import {
   Alert,
@@ -40,7 +41,7 @@ const ReservationScreen = () => {
         {
           text: "OK",
           onPress: () => {
-            console.log("Pretend search happens, then reset form.");
+            presentLocalNotification(date.toLocaleDateString("en-US"));
             resetForm();
           },
         },
@@ -54,6 +55,33 @@ const ReservationScreen = () => {
     setHikeIn(false);
     setDate(new Date());
     setShowCalendar(false);
+  };
+
+  const presentLocalNotification = async (reservationDate) => {
+    const sendNotification = () => {
+      Notifications.setNotificationHandler({
+        handleNotification: async () => ({
+          shouldShowAlert: true,
+          shouldPlaySound: true,
+          shouldSetBadge: true,
+        }),
+      });
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Your Campsite Reservation Search",
+          body: `Search for ${reservationDate} requested`,
+        },
+        trigger: null,
+      });
+    };
+
+    let permissions = await Notifications.getPermissionsAsync();
+    if (!permissions.granted) {
+      permissions = await Notifications.requestPermissionsAsync();
+    }
+    if (permissions.granted) {
+      sendNotification();
+    }
   };
 
   return (
