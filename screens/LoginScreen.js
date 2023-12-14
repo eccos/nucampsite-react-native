@@ -1,9 +1,10 @@
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
-import { Button, StyleSheet, View } from "react-native";
-import { CheckBox, Input } from "react-native-elements";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Button, CheckBox, Icon, Input } from "react-native-elements";
 
-const LoginScreen = () => {
+const LoginTab = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
@@ -101,9 +102,77 @@ const LoginScreen = () => {
         containerStyle={styles.formCheckbox}
       />
       <View style={styles.formButton}>
-        <Button onPress={() => handleLogin()} title="Login" color={"#5637DD"} />
+        <Button
+          icon={
+            <Icon
+              name="sign-in"
+              type="font-awesome"
+              color={"#FFF"}
+              iconStyle={{ marginRight: 10 }}
+            />
+          }
+          title="Login"
+          color={"#5637DD"}
+          buttonStyle={{ backgroundColor: "#5637DD" }}
+          onPress={() => handleLogin()}
+        />
+      </View>
+      <View style={styles.formButton}>
+        <Button
+          icon={
+            <Icon
+              name="user-plus"
+              type="font-awesome"
+              color={"blue"}
+              iconStyle={{ marginRight: 10 }}
+            />
+          }
+          title="Register"
+          type="clear"
+          titleStyle={{ color: "blue" }}
+          onPress={() => navigation.navigate("Register")}
+        />
       </View>
     </View>
+  );
+};
+
+const RegisterTab = () => {
+  return <ScrollView></ScrollView>;
+};
+
+const Tab = createBottomTabNavigator();
+
+const LoginScreen = () => {
+  const tabBarOptions = {
+    activeBackgroundColor: "#5637DD",
+    inactiveBackgroundColor: "#CEC8FF",
+    activeTintColor: "#FFF",
+    inactiveTintColor: "#808080",
+    labelStyle: { fontSize: 16 },
+  };
+
+  return (
+    <Tab.Navigator tabBarOptions={tabBarOptions}>
+      <Tab.Screen
+        name="Login"
+        component={LoginTab}
+        options={{
+          tabBarIcon: (props) => (
+            <Icon name="sign-in" type="font-awesome" color={props.color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Register"
+        component={RegisterTab}
+        options={{
+          tabBarIcon: (props) => (
+            <Icon name="user-plus" type="font-awesome" color={props.color} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
   );
 };
 

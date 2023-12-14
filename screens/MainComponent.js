@@ -3,6 +3,7 @@ import {
   DrawerItemList,
   createDrawerNavigator,
 } from "@react-navigation/drawer";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Constants from "expo-constants";
 import { useEffect } from "react";
@@ -143,15 +144,20 @@ const LoginNavigator = () => {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={({ navigation }) => ({
+        options={({ navigation, route }) => ({
           headerLeft: () => (
             <Icon
-              name="sign-in"
+              name={
+                getFocusedRouteNameFromRoute(route) === "Register"
+                  ? "user-plus"
+                  : "sign-in"
+              }
               type="font-awesome"
               iconStyle={styles.stackIcon}
               onPress={() => navigation.toggleDrawer()}
             />
           ),
+          headerTitle: getFocusedRouteNameFromRoute(route),
         })}
       />
     </Stack.Navigator>
