@@ -1,3 +1,4 @@
+import NetInfo from "@react-native-community/netinfo";
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -8,10 +9,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Constants from "expo-constants";
 import { useEffect } from "react";
 import {
+  Alert,
   Image,
   Platform,
   StyleSheet,
   Text,
+  ToastAndroid,
   View,
   useWindowDimensions,
 } from "react-native";
@@ -233,6 +236,42 @@ const Main = () => {
     dispatch(fetchPartners());
     dispatch(fetchComments());
   }, [dispatch]);
+
+  useEffect(() => {
+    NetInfo.fetch().then((connectionInfo) => {
+      const msg = "Initial Network Connectivity Type:";
+      Platform.OS === "ios"
+        ? Alert.alert(msg, connectionInfo.type)
+        : ToastAndroid.show(`${msg} ${connectionInfo.type}`, ToastAndroid.LONG);
+    });
+
+    const unsubscribeNetInfo = NetInfo.addEventListener((connectionInfo) => {
+      handleConnectivityChange(connectionInfo);
+    });
+
+    return unsubscribeNetInfo;
+  }, []);
+
+  const handleConnectivityChange = (connectionInfo) => {
+    let connectionMsg = "Network connection is active.";
+    switch (connectionInfo.type) {
+      case "none":
+        connectionMsg = "Network connection is inactive.";
+        break;
+      case "unknown":
+        connectionMsg = "Network connection is unknown.";
+        break;
+      case "cellular":
+        connectionMsg = "Network connection is cellular network.";
+        break;
+      case "wifi":
+        connectionMsg = "Network connection is WiFi network.";
+        break;
+    }
+    Platform.OS === "ios"
+      ? Alert.alert("Connection change:", connectionMsg)
+      : ToastAndroid.show(connectionMsg, ToastAndroid.LONG);
+  };
 
   return (
     <View
