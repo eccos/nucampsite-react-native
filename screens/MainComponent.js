@@ -1,44 +1,41 @@
-import NetInfo from "@react-native-community/netinfo";
+import NetInfo from '@react-native-community/netinfo';
 import {
   DrawerContentScrollView,
   DrawerItemList,
   createDrawerNavigator,
-} from "@react-navigation/drawer";
-import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import Constants from "expo-constants";
-import { useEffect } from "react";
-import {
-  Alert,
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  ToastAndroid,
-  View,
-  useWindowDimensions,
-} from "react-native";
-import { Icon } from "react-native-elements";
-import { useDispatch } from "react-redux";
-import logo from "../assets/images/logo.png";
-import { fetchCampsites } from "../features/campsites/campsitesSlice";
-import { fetchComments } from "../features/comments/commentsSlice";
-import { fetchPartners } from "../features/partners/partnersSlice";
-import { fetchPromotions } from "../features/promotions/promotionsSlice";
-import AboutScreen from "./AboutScreen";
-import CampsiteInfoScreen from "./CampsiteInfoScreen";
-import ContactScreen from "./ContactScreen";
-import DirectoryScreen from "./DirectoryScreen";
-import FavoritesScreen from "./FavoritesScreen";
-import HomeScreen from "./HomeScreen";
-import LoginScreen from "./LoginScreen";
-import ReservationScreen from "./ReservationScreen";
+} from '@react-navigation/drawer';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Constants from 'expo-constants';
+import { useEffect } from 'react';
+import { Alert, Image, Platform, StyleSheet, Text, View } from 'react-native';
+import { Icon } from 'react-native-elements';
+import { useDispatch } from 'react-redux';
+import logo from '../assets/images/logo.png';
+import { fetchCampsites } from '../features/campsites/campsitesSlice';
+import { fetchComments } from '../features/comments/commentsSlice';
+import { fetchPartners } from '../features/partners/partnersSlice';
+import { fetchPromotions } from '../features/promotions/promotionsSlice';
+import AboutScreen from './AboutScreen';
+import CampsiteInfoScreen from './CampsiteInfoScreen';
+import ContactScreen from './ContactScreen';
+import DirectoryScreen from './DirectoryScreen';
+import FavoritesScreen from './FavoritesScreen';
+import HomeScreen from './HomeScreen';
+import LoginScreen from './LoginScreen';
+import ReservationScreen from './ReservationScreen';
+
+// separate specific platform package(s) so app compiles correctly on diff platforms
+let ToastAndroid;
+if (Platform.OS === 'android') {
+  ToastAndroid = require('react-native').ToastAndroid;
+}
 
 const Drawer = createDrawerNavigator();
 
 const screenOptions = {
-  headerTintColor: "#FFF",
-  headerStyle: { backgroundColor: "#5637DD" },
+  headerTintColor: '#FFF',
+  headerStyle: { backgroundColor: '#5637DD' },
 };
 
 const HomeNavigator = () => {
@@ -49,7 +46,7 @@ const HomeNavigator = () => {
         name="Home"
         component={HomeScreen}
         options={({ navigation }) => ({
-          title: "Home",
+          title: 'Home',
           headerLeft: () => (
             <Icon
               name="home"
@@ -72,7 +69,7 @@ const DirectoryNavigator = () => {
         name="Directory"
         component={DirectoryScreen}
         options={({ navigation }) => ({
-          title: "Campsite Directory",
+          title: 'Campsite Directory',
           headerLeft: () => (
             <Icon
               name="list"
@@ -102,7 +99,7 @@ const ReservationNavigator = () => {
         name="Reservation"
         component={ReservationScreen}
         options={({ navigation }) => ({
-          title: "Reservation Search",
+          title: 'Reservation Search',
           headerLeft: () => (
             <Icon
               name="tree"
@@ -125,7 +122,7 @@ const FavoritesNavigator = () => {
         name="Favorites"
         component={FavoritesScreen}
         options={({ navigation }) => ({
-          title: "Favorite Campsites",
+          title: 'Favorite Campsites',
           headerLeft: () => (
             <Icon
               name="heart"
@@ -151,9 +148,9 @@ const LoginNavigator = () => {
           headerLeft: () => (
             <Icon
               name={
-                getFocusedRouteNameFromRoute(route) === "Register"
-                  ? "user-plus"
-                  : "sign-in"
+                getFocusedRouteNameFromRoute(route) === 'Register'
+                  ? 'user-plus'
+                  : 'sign-in'
               }
               type="font-awesome"
               iconStyle={styles.stackIcon}
@@ -197,7 +194,7 @@ const ContactNavigator = () => {
         name="Contact"
         component={ContactScreen}
         options={({ navigation }) => ({
-          title: "Contact Us",
+          title: 'Contact Us',
           headerLeft: () => (
             <Icon
               name="address-card"
@@ -222,13 +219,12 @@ const CustomDrawerContent = (props) => (
         <Text style={styles.drawerHeaderText}>nucamp</Text>
       </View>
     </View>
-    <DrawerItemList {...props} labelStyle={{ fontWeight: "bold" }} />
+    <DrawerItemList {...props} labelStyle={{ fontWeight: 'bold' }} />
   </DrawerContentScrollView>
 );
 
 const Main = () => {
   const dispatch = useDispatch();
-  const { width } = useWindowDimensions();
 
   useEffect(() => {
     dispatch(fetchCampsites());
@@ -238,12 +234,17 @@ const Main = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    NetInfo.fetch().then((connectionInfo) => {
-      const msg = "Initial Network Connectivity Type:";
-      Platform.OS === "ios"
-        ? Alert.alert(msg, connectionInfo.type)
-        : ToastAndroid.show(`${msg} ${connectionInfo.type}`, ToastAndroid.LONG);
-    });
+    (async () => {
+      const connectionInfo = await NetInfo.fetch();
+      const msg = 'Initial Network Connectivity Type:';
+      if (Platform.OS === 'android') {
+        ToastAndroid.show(`${msg} ${connectionInfo.type}`, ToastAndroid.LONG);
+      } else if (Platform.OS === 'ios') {
+        Alert.alert(msg, connectionInfo.type);
+      } else {
+        console.log(`${msg} ${connectionInfo.type}`, connectionMsg);
+      }
+    })();
 
     const unsubscribeNetInfo = NetInfo.addEventListener((connectionInfo) => {
       handleConnectivityChange(connectionInfo);
@@ -253,38 +254,42 @@ const Main = () => {
   }, []);
 
   const handleConnectivityChange = (connectionInfo) => {
-    let connectionMsg = "Network connection is active.";
+    let connectionMsg = 'Network Connection: Active';
     switch (connectionInfo.type) {
-      case "none":
-        connectionMsg = "Network connection is inactive.";
+      case 'none':
+        connectionMsg = 'Network Connection: Inactive';
         break;
-      case "unknown":
-        connectionMsg = "Network connection is unknown.";
+      case 'unknown':
+        connectionMsg = 'Network Connection: Unknown';
         break;
-      case "cellular":
-        connectionMsg = "Network connection is cellular network.";
+      case 'cellular':
+        connectionMsg = 'Network Connection: Cellular';
         break;
-      case "wifi":
-        connectionMsg = "Network connection is WiFi network.";
+      case 'wifi':
+        connectionMsg = 'Network Connection: WiFi';
         break;
     }
-    Platform.OS === "ios"
-      ? Alert.alert("Connection change:", connectionMsg)
-      : ToastAndroid.show(connectionMsg, ToastAndroid.LONG);
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(connectionMsg, ToastAndroid.LONG);
+    } else if (Platform.OS === 'ios') {
+      Alert.alert('Connection change:', connectionMsg);
+    } else {
+      console.log('Connection change:', connectionMsg);
+    }
   };
 
   return (
     <View
       style={{
         flex: 1,
-        paddingTop: Platform.OS === "ios" ? 0 : Constants.statusBarHeight,
+        paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight,
       }}
     >
       <Drawer.Navigator
         initialRouteName="Home"
         drawerContent={CustomDrawerContent}
-        drawerStyle={{ backgroundColor: "#CEC8FF" }}
-        edgeWidth={width / 8}
+        drawerStyle={{ backgroundColor: '#CEC8FF' }}
+        edgeWidth={100}
       >
         <Drawer.Screen
           name="Login"
@@ -305,7 +310,7 @@ const Main = () => {
           name="Home"
           component={HomeNavigator}
           options={{
-            title: "Home",
+            title: 'Home',
             drawerIcon: ({ color }) => (
               <Icon
                 name="home"
@@ -321,7 +326,7 @@ const Main = () => {
           name="Directory"
           component={DirectoryNavigator}
           options={{
-            title: "Campsite Directory",
+            title: 'Campsite Directory',
             drawerIcon: ({ color }) => (
               <Icon
                 name="list"
@@ -337,7 +342,7 @@ const Main = () => {
           name="ReserveCampsite"
           component={ReservationNavigator}
           options={{
-            title: "Reserve Campsite",
+            title: 'Reserve Campsite',
             drawerIcon: ({ color }) => (
               <Icon
                 name="tree"
@@ -353,7 +358,7 @@ const Main = () => {
           name="Favorites"
           component={FavoritesNavigator}
           options={{
-            title: "My Favorites",
+            title: 'My Favorites',
             drawerIcon: ({ color }) => (
               <Icon
                 name="heart"
@@ -369,7 +374,7 @@ const Main = () => {
           name="About"
           component={AboutNavigator}
           options={{
-            title: "About",
+            title: 'About',
             drawerIcon: ({ color }) => (
               <Icon
                 name="info-circle"
@@ -385,7 +390,7 @@ const Main = () => {
           name="Contact"
           component={ContactNavigator}
           options={{
-            title: "Contact Us",
+            title: 'Contact Us',
             drawerIcon: ({ color }) => (
               <Icon
                 name="address-card"
@@ -404,17 +409,17 @@ const Main = () => {
 
 const styles = StyleSheet.create({
   drawerHeader: {
-    backgroundColor: "#5637DD",
+    backgroundColor: '#5637DD',
     height: 140,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   drawerHeaderText: {
-    color: "#FFF",
+    color: '#FFF',
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   drawerImage: {
     margin: 10,
@@ -423,7 +428,7 @@ const styles = StyleSheet.create({
   },
   stackIcon: {
     marginLeft: 10,
-    color: "#FFF",
+    color: '#FFF',
     fontSize: 24,
   },
 });
