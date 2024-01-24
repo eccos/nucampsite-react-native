@@ -65,21 +65,21 @@ const RenderCampsite = (props) => {
     return (
       <Animatable.View
         animation="fadeInDownBig"
-        duration={2000}
-        delay={500}
+        duration={500}
+        delay={125}
         ref={view}
         {...panResponder.panHandlers}
       >
         <Card containerStyle={styles.cardContainer}>
           <Card.Image source={{ uri: baseUrl + campsite.image }}>
-            <View style={{ justifyContent: "center", flex: 1 }}>
+            <View style={{ justifyContent: 'center', flex: 1 }}>
               <Text style={styles.cardText}>{campsite.name}</Text>
             </View>
           </Card.Image>
           <Text style={{ margin: 20 }}>{campsite.description}</Text>
           <View style={styles.cardRow}>
             <Icon
-              name={isFavorite ? "heart" : "heart-o"}
+              name={isFavorite ? 'heart' : 'heart-o'}
               type="font-awesome"
               color="#F50"
               raised
@@ -87,7 +87,7 @@ const RenderCampsite = (props) => {
               onPress={markFavorite}
             />
             <Icon
-              name={"pencil"}
+              name={'pencil'}
               type="font-awesome"
               color="#5637DD"
               raised
@@ -95,7 +95,7 @@ const RenderCampsite = (props) => {
               onPress={onShowModal}
             />
             <Icon
-              name={"share"}
+              name={'share'}
               type="font-awesome"
               color="#5637DD"
               raised

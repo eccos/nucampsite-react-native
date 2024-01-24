@@ -21,12 +21,12 @@ const DirectoryScreen = ({ navigation }) => {
 
   const renderDirectoryItem = ({ item: campsite }) => {
     return (
-      <Animatable.View animation="fadeInRightBig" duration={2000}>
+      <Animatable.View animation="fadeInRightBig" duration={500}>
         <Tile
           title={campsite.name}
           caption={campsite.description}
           featured
-          onPress={() => navigation.navigate("CampsiteInfo", { campsite })}
+          onPress={() => navigation.navigate('CampsiteInfo', { campsite })}
           imageSrc={{ uri: baseUrl + campsite.image }}
         />
       </Animatable.View>

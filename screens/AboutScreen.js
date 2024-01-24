@@ -7,7 +7,7 @@ import { baseUrl } from "../shared/baseUrl";
 
 const Mission = () => {
   return (
-    <Animatable.View animation="fadeInDown" duration={2000} delay={500}>
+    <Animatable.View animation="fadeInDown" duration={500} delay={125}>
       <Card>
         <Card.Title>Our Mission</Card.Title>
         <Card.Divider />
@@ -69,7 +69,7 @@ const AboutScreen = () => {
           <Loading />
         </Partners>
       ) : (
-        <Animatable.View animation="fadeInDown" duration={2000} delay={500}>
+        <Animatable.View animation="fadeInDown" duration={500} delay={125}>
           <Partners>{cardContent}</Partners>
         </Animatable.View>
       )}

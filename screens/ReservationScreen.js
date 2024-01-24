@@ -86,7 +86,7 @@ const ReservationScreen = () => {
 
   return (
     <ScrollView>
-      <Animatable.View animation={"zoomIn"} duration={2000} delay={1000}>
+      <Animatable.View animation={'zoomIn'} duration={500} delay={125}>
         <View style={styles.formRow}>
           <Text style={styles.formLabel}>Number of Campers:</Text>
           <Picker
@@ -107,7 +107,7 @@ const ReservationScreen = () => {
           <Switch
             style={styles.formItem}
             value={hikeIn}
-            trackColor={{ true: "#5637DD", false: null }}
+            trackColor={{ true: '#5637DD', false: null }}
             onValueChange={(value) => setHikeIn(value)}
           />
         </View>
@@ -115,7 +115,7 @@ const ReservationScreen = () => {
           <Text style={styles.formLabel}>Date:</Text>
           <Button
             onPress={() => setShowCalendar(!showCalendar)}
-            title={date.toLocaleDateString("en-US")}
+            title={date.toLocaleDateString('en-US')}
             color="#5637DD"
             accessibilityLabel="Tap me to select a reservation date"
           />

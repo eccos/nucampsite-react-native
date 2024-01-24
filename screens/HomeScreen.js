@@ -16,12 +16,12 @@ const FeaturedItem = ({ item, isLoading, errMess }) => {
     );
   } else if (item) {
     return (
-      <Animatable.View animation="zoomIn" duration={1000}>
+      <Animatable.View animation="zoomIn" duration={500}>
         <Card containerStyle={{ padding: 0 }}>
           <Card.Image source={{ uri: baseUrl + item.image }}>
-            <View style={{ justifyContent: "center", flex: 1 }}>
+            <View style={{ justifyContent: 'center', flex: 1 }}>
               <Text
-                style={{ color: "white", textAlign: "center", fontSize: 20 }}
+                style={{ color: 'white', textAlign: 'center', fontSize: 20 }}
               >
                 {item.name}
               </Text>

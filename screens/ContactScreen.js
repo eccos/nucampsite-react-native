@@ -14,7 +14,7 @@ const ContactScreen = () => {
 
   return (
     <ScrollView>
-      <Animatable.View animation="fadeInDown" duration={2000} delay={500}>
+      <Animatable.View animation="fadeInDown" duration={500} delay={125}>
         <Card wrapperStyle={{ margin: 10 }}>
           <Card.Title>Contact Information</Card.Title>
           <Card.Divider />
@@ -24,13 +24,13 @@ const ContactScreen = () => {
           <Text>Phone: 1-206-555-1234</Text>
           <Text>Email: campsites@nucamp.co</Text>
           <Button
-            title={"Send Email"}
-            buttonStyle={{ backgroundColor: "#5637DD", margin: 40 }}
+            title={'Send Email'}
+            buttonStyle={{ backgroundColor: '#5637DD', margin: 40 }}
             icon={
               <Icon
                 name="envelope-o"
                 type="font-awesome"
-                color={"#FFF"}
+                color={'#FFF'}
                 iconStyle={{ marginRight: 10 }}
               />
             }

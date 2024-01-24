@@ -47,7 +47,7 @@ const CampsiteInfoScreen = ({ route }) => {
   };
 
   return (
-    <Animatable.View animation="fadeInUp" duration={2000} delay={500}>
+    <Animatable.View animation="fadeInUp" duration={500} delay={125}>
       <FlatList
         data={comments.commentsArray.filter(
           (comment) => comment.campsiteId === campsite.id
@@ -67,13 +67,13 @@ const CampsiteInfoScreen = ({ route }) => {
               onShowModal={() => setShowModal(!showModal)}
             />
             <View
-              style={{ backgroundColor: "#FFF", flex: 1, alignItems: "center" }}
+              style={{ backgroundColor: '#FFF', flex: 1, alignItems: 'center' }}
             >
               <Text style={styles.commentsTitle}>Comments</Text>
               <Divider
                 orientation="horizontal"
                 width={1}
-                style={{ width: "90%", margin: "auto" }}
+                style={{ width: '90%', margin: 'auto' }}
               />
             </View>
           </>
@@ -95,14 +95,14 @@ const CampsiteInfoScreen = ({ route }) => {
           />
           <Input
             placeholder="Author"
-            leftIcon={{ type: "font-awesome", name: "user-o" }}
+            leftIcon={{ type: 'font-awesome', name: 'user-o' }}
             leftIconContainerStyle={{ paddingRight: 10 }}
             onChangeText={(author) => setAuthor(author)}
             value={author}
           />
           <Input
             placeholder="Comment"
-            leftIcon={{ type: "font-awesome", name: "comment-o" }}
+            leftIcon={{ type: 'font-awesome', name: 'comment-o' }}
             leftIconContainerStyle={{ paddingRight: 10 }}
             onChangeText={(text) => setText(text)}
             value={text}
